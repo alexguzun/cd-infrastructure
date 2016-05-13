@@ -1,0 +1,7 @@
+service_instances: 2
+host: "{{ ip }}"
+alias: ""
+
+ansible_connection: ssh 
+ansible_ssh_user: vagrant 
+ansible_ssh_pass: vagrant

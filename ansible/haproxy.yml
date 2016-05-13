@@ -1,0 +1,6 @@
+- hosts: haproxy
+  serial: 1
+  remote_user: vagrant
+  sudo: true
+  roles:
+    - haproxy

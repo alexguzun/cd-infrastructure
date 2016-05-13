@@ -1,0 +1,22 @@
+---
+- name: gitlab directories are present
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: 0777
+  with_items: "{{directories}}"
+  tags: [repo]
+
+- name: Container is running
+  docker:
+    name: git-repo
+    image: gitlab/gitlab-ce
+    restart_policy: always    
+    hostname: "{{ ip }}"
+    ports: "{{ ports }}"
+    volumes: "{{ volumes }}"
+    state: started
+    env:
+      SERVICE_ID: git-repo
+      SERVICE_NAME: git-repo
+  tags: [repo]

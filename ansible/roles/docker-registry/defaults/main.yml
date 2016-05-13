@@ -1,0 +1,8 @@
+ports:
+  - '5000:5000'
+
+directories:
+  - /data/docker-registry/
+
+volumes:
+  - /data/docker-registry:/var/lib/registry

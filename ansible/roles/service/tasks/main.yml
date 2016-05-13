@@ -1,0 +1,49 @@
+- meta: flush_handlers
+  tags: [service]
+
+- name: Compose directory is present
+  file:
+    dest: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
+    state: directory
+  tags: [service]
+
+- name: Compose template is present
+  template:
+    src: "{{ container_name }}.yml.j2"
+    dest: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}/docker-compose.yml.ctmpl"
+  register: result
+  tags: [service]
+
+- include: apply-service-template.yml
+
+- name: Container is stopped
+  shell: docker-compose stop {{ container_name }}
+  args:
+    chdir: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
+  environment:
+    DOCKER_HOST: tcp://0.0.0.0:2375
+  tags: [service]
+
+- name: Container is removed
+  shell: docker-compose rm -f {{ container_name }}
+  args:
+    chdir: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
+  environment:
+    DOCKER_HOST: tcp://0.0.0.0:2375
+  tags: [service]
+
+- name: Latest container image is pulled
+  shell: docker-compose pull {{ container_name }}
+  args:
+    chdir: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
+  environment:
+    DOCKER_HOST: tcp://0.0.0.0:2375
+  tags: [service]
+
+- name: Container is up
+  shell: docker-compose scale {{ container_name }}={{ service_instances }}
+  args:
+    chdir: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
+  environment:
+    DOCKER_HOST: tcp://0.0.0.0:2375
+  tags: [service]

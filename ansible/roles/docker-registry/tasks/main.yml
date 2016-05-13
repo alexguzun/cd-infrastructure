@@ -1,0 +1,21 @@
+---
+- name: docker-registry directories are present
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: 0777
+  with_items: "{{directories}}"
+  tags: [docker-registry]
+
+- name: Container is running
+  docker:
+    name: registry 
+    image: registry:2
+    restart_policy: always
+    hostname: "{{ ip }}"
+    ports: "{{ ports }}"
+    volumes: "{{ volumes }}"
+    state: started
+    env:      
+      SERVICE_NAME: docker-registry
+  tags: [docker-registry]

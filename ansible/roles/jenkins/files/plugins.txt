@@ -1,0 +1,20 @@
+scm-api:latest
+git-client:latest
+git:latest
+ansible:latest
+durable-task:latest
+ruby-runtime:latest
+gitlab-hook:latest
+maven-plugin:latest
+
+#docker commons start
+authentication-tokens:latest
+icon-shim:latest
+docker-commons:latest
+#docker commons end
+
+#docker build publis start
+#also depeneds on docker-commons
+token-macro:latest
+docker-build-publish:latest
+#docker build publis end

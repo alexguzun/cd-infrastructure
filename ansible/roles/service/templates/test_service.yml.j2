@@ -1,0 +1,7 @@
+test_service:
+  ports:
+    - 8080
+  environment:
+    - SERVICE_NAME={{ alias }}test_service
+
+  image: 10.100.199.203:5000/test_service:latest

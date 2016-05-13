@@ -1,0 +1,7 @@
+- include: compose.yml
+- include: swarm.yml
+- include: consul.yml
+- include: repo.yml
+- include: registry.yml
+- include: jenkins.yml
+- include: haproxy.yml

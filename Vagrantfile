@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=700,fmode=600"]
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+  end
+
+  config.vm.provision :shell, path: "bootstrap.sh"
+  
+  (1..2).each do |i|
+    config.vm.define "swarm-node-0#{i}" do |node|
+      node.vm.hostname = "swarm-node-0#{i}"
+      node.vm.network "private_network", ip: "10.100.199.20#{i}"
+    end
+  end
+  
+  config.vm.define "repo" do |node|
+    node.vm.hostname = "repo"
+    node.vm.provider "virtualbox" do |vv|
+      vv.memory = 2048
+    end
+    node.vm.network "private_network", ip: "10.100.199.203"
+  end
+
+  config.vm.define "swarm-master" do |node|
+    node.vm.hostname = "swarm-master"
+    node.vm.provision :shell, path: "bootstrap_ansible.sh"
+    node.vm.network "private_network", ip: "10.100.199.200"
+    node.vm.network "forwarded_port", guest: 2376, host: 2376
+    node.vm.network "forwarded_port", guest: 2375, host: 2375
+  end
+
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+end

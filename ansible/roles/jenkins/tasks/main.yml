@@ -1,0 +1,47 @@
+---
+- name: Node directory is present
+  file:
+    path: /data/jenkins/slaves/cd
+    state: directory
+    mode: 0777
+  tags: [jenkins]
+
+- name: Job directories are present
+  file:
+    path: '{{ jenkins_base_dir }}/jobs/{{ item.dest }}'
+    state: directory
+    mode: 0777
+  with_items: "{{jenkins_jobs}}"
+  tags: [jenkins]
+
+- name: Build jobs are present
+  shell: >
+    consul-template \
+      -consul localhost:8500 \
+      -template "{{role_path}}/templates/{{ item.template }}:{{ jenkins_base_dir }}/jobs/{{ item.dest }}/config.xml" \
+      -once
+  with_items: "{{jenkins_jobs}}"
+  tags: [jenkins]
+
+- name: Container is Build
+  docker_image:
+    path: "{{role_path}}/files"
+    name: "cd/jenkins"
+    state: build
+
+- name: Container is running
+  docker:
+    name: jenkins
+    image: cd/jenkins
+    ports: 8080:8080
+    volumes:
+      - "{{ jenkins_base_dir }}:/var/jenkins_home"
+      - "/vagrant/ansible:/vagrant/ansible"
+    env:
+      SERVICE_ID: jenkins
+    state: reloaded  
+  tags: [jenkins]
+
+- name: Reload
+  shell: docker restart jenkins
+  tags: [jenkins, reload]

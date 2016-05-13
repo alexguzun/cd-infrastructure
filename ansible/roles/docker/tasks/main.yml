@@ -1,0 +1,32 @@
+---
+- name: Add docker apt repo
+  apt_repository:
+      repo='deb https://apt.dockerproject.org/repo {{ansible_distribution | lower}}-{{ansible_distribution_release | lower}} main'
+      state=present
+
+- name: Import the Docker repository key
+  apt_key:
+      keyserver=hkp://p80.pool.sks-keyservers.net:80
+      state=present
+      id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: Install Docker package
+  apt:
+      name=docker-engine      
+      state=present
+      force=yes
+
+- name: Install Docker package
+  apt:
+      name=lxc-docker
+      state=absent
+
+- name: Python-pip is present
+  apt:
+    name: python-pip
+    state: present
+  tags: [docker]
+
+- name: Docker-py is present
+  pip: name=docker-py version=1.7.2 state=present
+  tags: [docker]

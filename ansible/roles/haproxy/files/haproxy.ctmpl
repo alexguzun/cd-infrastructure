@@ -1,0 +1,31 @@
+global
+    log 127.0.0.1   local0
+    log 127.0.0.1   local1 notice
+    debug
+    stats timeout 30s
+    maxconn 4096
+
+defaults
+    log global
+    option httplog
+    option dontlognull
+    mode http    
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+
+frontend main
+    bind *:80
+    default_backend test_service
+
+backend test_service
+    balance roundrobin
+    {{range service "test_service" "passing, warning"}}
+    server {{.ID}} {{.Address}}:{{.Port}} check
+    {{end}}
+
+listen stats 
+	bind *:1936
+    stats enable
+    stats uri /
+    stats hide-version

@@ -1,0 +1,14 @@
+ports:
+  - '80:80'
+  - '443:443'
+  - '22'
+
+directories:
+  - /srv/gitlab/data
+  - /srv/gitlab/logs
+  - /srv/gitlab/config
+
+volumes:
+  - /srv/gitlab/config:/etc/gitlab:rw
+  - /srv/gitlab/logs:/var/log/gitlab:rw
+  - /srv/gitlab/data:/var/opt/gitlab:rw

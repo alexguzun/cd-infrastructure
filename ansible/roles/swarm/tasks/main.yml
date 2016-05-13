@@ -1,0 +1,56 @@
+- name: Directories are present
+  file:
+    dest: "{{ item }}"
+    state: directory
+  with_items: "{{master_directories}}"
+  when: swarm_master is defined
+  tags: [swarm]
+
+- name: Scripts are present
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0755
+  with_items: "{{master_scripts}}"
+  when: swarm_master is defined
+  tags: [swarm]
+
+- name: Obsolete Docker init.d service is removed
+  file:
+    dest: /etc/init.d/docker
+    state: absent
+  tags: [swarm]
+
+- name: Configuration is present
+  copy:
+    src: docker.cfg
+    dest: /etc/default/docker
+  register: config_result
+  when: not swarm_master is defined
+  tags: [swarm]
+
+- name: Service is restarted
+  service:
+    name=docker
+    state=restarted
+  when: config_result|changed
+  tags: [swarm]
+
+- name: Swarm node is running
+  docker:
+    name: swarm-node
+    image: swarm
+    command: join --addr={{ ip }}:2375 consul://{{ ip }}:8500/swarm
+  when: not swarm_master is defined
+  tags: [swarm]
+
+- name: Swarm master is running
+  docker:
+    name: swarm-master
+    image: swarm
+    ports: 2375:2375
+    command: manage consul://{{ ip }}:8500/swarm
+    env:
+      SERVICE_ID: swarm-master
+  when: swarm_master is defined
+  tags: [swarm]

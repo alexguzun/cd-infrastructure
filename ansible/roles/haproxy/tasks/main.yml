@@ -1,0 +1,19 @@
+---
+- name: Container is Build
+  docker_image:
+    path: "{{role_path}}/files"
+    name: "cd/haproxy"
+    state: build
+
+- name: haproxy container is running
+  docker:
+    image: cd/haproxy
+    name: haproxy
+    ports: "{{ ports }}"
+    command: "-consul {{ip}}:8500"
+    env:
+      SERVICE_ID: haproxy
+      SERVICE_NAME: haproxy
+    state: reloaded
+
+  tags: [haproxy]

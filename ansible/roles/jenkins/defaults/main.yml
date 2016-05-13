@@ -1,0 +1,5 @@
+jenkins_base_dir: /data/jenkins
+
+jenkins_jobs: [
+  { template: "test-service.xml.ctmpl", dest: "test-service" }
+]

@@ -1,0 +1,13 @@
+---
+- name: install docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{docker_compose_version}}/docker-compose-{{ansible_system}}-{{ansible_architecture}}
+    dest: /usr/local/bin/docker-compose
+    force: yes
+  tags: [compose]
+
+- name: Apply executable permissions to the docker-compose
+  file: 
+    name: /usr/local/bin/docker-compose
+    mode: "u+x,g+x,o+x"  
+  tags: [compose]

@@ -1,0 +1,12 @@
+- hosts: swarm-master
+  remote_user: vagrant
+  sudo: yes
+  vars:
+    - container_image: test_service
+    - container_name: test_service
+    - http_address: /
+  roles:
+    - docker
+    - consul
+    - swarm
+    - service
