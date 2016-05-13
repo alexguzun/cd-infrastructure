@@ -20,10 +20,11 @@ Based on great example from @vfarcic : [https://github.com/vfarcic/docker-swarm]
 Almost all infrastructure set-up and configuration can be automated with an Ansible Playbook. Unfortunately there are some manual configuration steps that can not be automated. See [manual steps](#manual-steps).
 
 ## Overview
-![CD infrastructure overview]()
+![CD infrastructure overview](https://raw.githubusercontent.com/alexguzun/cd-infrastructure/master/img/infra.png)
 
 ## Delivery Workflow
 An usual deployment workflow will have these steps:
+
 1. The developer pushes a new version of the code to the Git Repository
 2. Git Repository send a notification to the CI server
 3. CI server executes the defined job or a pipeline of jobs, that include:
