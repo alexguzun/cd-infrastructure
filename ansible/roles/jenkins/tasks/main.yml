@@ -27,7 +27,7 @@
   docker_image:
     path: "{{role_path}}/files"
     name: "cd/jenkins"
-    state: build
+    state: present
 
 - name: Container is running
   docker:

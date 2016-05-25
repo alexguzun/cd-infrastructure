@@ -3,7 +3,7 @@
   docker_image:
     path: "{{role_path}}/files"
     name: "cd/haproxy"
-    state: build
+    state: present
 
 - name: haproxy container is running
   docker:
