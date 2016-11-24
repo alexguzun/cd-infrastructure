@@ -92,21 +92,23 @@
   tags: [consul]
 
 - name: Registrator is running
-  docker:
+  docker_container:
     name: registrator
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock
+      - "/var/run/docker.sock:/tmp/docker.sock"
     hostname: "{{ hostname }}"
     image: gliderlabs/registrator
     command: -ip {{ ip }} consul://{{ ip }}:8500
+    state: started
   tags: [consul]
 
 - name: Registrator KV is running
-  docker:
+  docker_container:
     name: registrator-kv
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock
+      - "/var/run/docker.sock:/tmp/docker.sock"
     hostname: "{{ hostname }}"
     image: gliderlabs/registrator
+    state: started
     command: -ip {{ ip }} consulkv://{{ ip }}:8500/services
   tags: [consul]

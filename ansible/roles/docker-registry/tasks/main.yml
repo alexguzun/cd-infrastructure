@@ -8,7 +8,7 @@
   tags: [docker-registry]
 
 - name: Container is running
-  docker:
+  docker_container:
     name: registry 
     image: registry:2
     restart_policy: always

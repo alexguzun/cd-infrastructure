@@ -8,7 +8,7 @@
   tags: [repo]
 
 - name: Container is running
-  docker:
+  docker_container:
     name: git-repo
     image: gitlab/gitlab-ce
     restart_policy: always    
@@ -16,6 +16,7 @@
     ports: "{{ ports }}"
     volumes: "{{ volumes }}"
     state: started
+    recreate: yes
     env:
       SERVICE_ID: git-repo
       SERVICE_NAME: git-repo
