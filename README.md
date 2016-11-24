@@ -80,7 +80,7 @@ An usual deployment workflow will have these steps:
 ##TODO
 
 - Swarm
-    - use Docker 1.2 swarm
+    - use Docker 1.2 swarm. Waiting for https://github.com/ansible/ansible-modules-core/issues/4607
 - Jenkins
 	- create pipeline using Jenkinsfile
 	- automate the creation of slave
