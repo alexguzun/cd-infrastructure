@@ -27,6 +27,16 @@
     state: present
   tags: [docker]
 
+- name: PyYaml is present
+  pip: name=pyyaml state=present
+  tags: [docker]
+
+- name: docker-compose pythom module is present
+  pip:
+   name: docker-compose
+   state: present
+  tags: [docker]
+
 - name: Docker-py is present
-  pip: name=docker-py version=1.7.2 state=present
+  pip: name=docker-py state=present
   tags: [docker]

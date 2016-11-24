@@ -1,6 +1,16 @@
-FROM jenkins
+FROM jenkins:2.19.3
+
 # if we want to install via apt
 USER root
 
-COPY plugins.txt /usr/share/jenkins/ref/
-RUN /usr/local/bin/plugins.sh /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh scm-api \
+    git-client \
+    git \
+    ansible \
+    gitlab-hook \
+    ssh-slaves \
+    maven-plugin \
+    javadoc \
+    workflow-aggregator \
+    docker-commons \
+    docker-build-publish

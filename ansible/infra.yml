@@ -1,4 +1,3 @@
-- include: compose.yml
 - include: swarm.yml
 - include: consul.yml
 - include: repo.yml

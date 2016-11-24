@@ -1,6 +1,6 @@
 - hosts: swarm-master
   remote_user: vagrant
-  sudo: yes
+  become: true
   vars:
     - container_image: test_service
     - container_name: test_service

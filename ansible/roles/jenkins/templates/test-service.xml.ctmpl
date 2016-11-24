@@ -73,7 +73,7 @@
       <createFingerprint>true</createFingerprint>
       <skipTagLatest>false</skipTagLatest>
       <buildAdditionalArgs></buildAdditionalArgs>
-      <forceTag>true</forceTag>
+      <forceTag>false</forceTag>
     </com.cloudbees.dockerpublish.DockerBuilder>
     <org.jenkinsci.plugins.ansible.AnsiblePlaybookBuilder plugin="ansible@0.5">
       <playbook>/vagrant/ansible/test_service.yml</playbook>

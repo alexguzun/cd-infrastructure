@@ -50,21 +50,27 @@ An usual deployment workflow will have these steps:
 - Jenkins (http://10.100.199.200:8080/)
 	- slave needs to be manually added using following steps.
 		1. Click Manage Jenkins > Manage Nodes > New Node
-		2. Name it cd, select Dumb Slave and click OK
+		2. Name it cd, select Permanent Agent  and click OK
 		3. Type /data/jenkins/slaves/cd as Remote Root Directory
-		4. Type 10.100.199.200 as Host
-		5. Select Launch slave agents on Unix machines via SSH
+		4. In Launch method, select Launch slave agents on Unix machines via SSH
+		5. Type 10.100.199.200 as Host
 		6. Click Add* next to **Credentials
 		7. Use vagrant as both Username and Password and click Add
 		8. Click Save
+	- manually configure Java:
+		1. Click Manage Jenkins > Global Tool Configuration
+		2. Find Java tool config
+		3. Type *java* in Name field
+		4. Select _Install automatically_ option
+		5. Add your Oracle user and password for download
 	- manually configure ansible:
-		1. Click Manage Jenkins > System Config
-		2. Find Ansible plugin config
+		1. Click Manage Jenkins > Global Tool Configuration
+		2. Find Ansible tool config
 		3. Type *ansible* in Name field
 		4. Type */usr/local/bin* in _Path to ansible executables directory_ field
 	- manually configure maven:
-		1. Click Manage Jenkins >  System Config
-		2. Find Maven plugin config
+		1. Click Manage Jenkins >  Global Tool Configuration
+		2. Find Maven tool config
 		3. Type *maven* in Name field
 		4. Select _Install automatically_ option
 - Test service
@@ -73,9 +79,10 @@ An usual deployment workflow will have these steps:
 
 ##TODO
 
+- Swarm
+    - use Docker 1.2 swarm
 - Jenkins
-	- create pipeline
-	- migrate to jenkins 2.0
+	- create pipeline using Jenkinsfile
 	- automate the creation of slave
 	- automate the configuration of plugins
 - Consul

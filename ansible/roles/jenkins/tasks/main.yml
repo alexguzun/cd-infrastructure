@@ -30,18 +30,15 @@
     state: present
 
 - name: Container is running
-  docker:
+  docker_container:
     name: jenkins
     image: cd/jenkins
     ports: 8080:8080
+    recreate: yes
+    state: started
     volumes:
       - "{{ jenkins_base_dir }}:/var/jenkins_home"
       - "/vagrant/ansible:/vagrant/ansible"
     env:
       SERVICE_ID: jenkins
-    state: reloaded  
   tags: [jenkins]
-
-- name: Reload
-  shell: docker restart jenkins
-  tags: [jenkins, reload]

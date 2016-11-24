@@ -16,20 +16,13 @@
 
 - include: apply-service-template.yml
 
-- name: Container is stopped
-  shell: docker-compose stop {{ container_name }}
-  args:
-    chdir: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
-  environment:
-    DOCKER_HOST: tcp://0.0.0.0:2375
-  tags: [service]
-
 - name: Container is removed
-  shell: docker-compose rm -f {{ container_name }}
-  args:
-    chdir: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
-  environment:
-    DOCKER_HOST: tcp://0.0.0.0:2375
+  docker_service:
+    project_name: "{{ container_name }}"
+    project_src: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
+    docker_host: tcp://0.0.0.0:2375
+    state: absent
+    stopped: true
   tags: [service]
 
 - name: Latest container image is pulled
@@ -41,9 +34,12 @@
   tags: [service]
 
 - name: Container is up
-  shell: docker-compose scale {{ container_name }}={{ service_instances }}
-  args:
-    chdir: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
-  environment:
-    DOCKER_HOST: tcp://0.0.0.0:2375
+  docker_service:
+    project_name: "{{ container_name }}"
+    project_src: "{{ compose_config_dir }}/{{ alias }}{{ container_name }}"
+    docker_host: tcp://0.0.0.0:2375
+    state: present
+    recreate: always
+    scale:
+      "{{ container_name }}" : "{{ service_instances }}"
   tags: [service]
